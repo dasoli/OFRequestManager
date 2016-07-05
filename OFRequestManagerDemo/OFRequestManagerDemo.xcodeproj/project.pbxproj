@@ -1,0 +1,441 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5CF121241D8BCB48535D4AB3 /* libPods-OFRequestManagerDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD586423AD0D473F9AE6C6C8 /* libPods-OFRequestManagerDemo.a */; };
+		E5C3597C1D2BF7C700080327 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3597B1D2BF7C700080327 /* main.m */; };
+		E5C3597F1D2BF7C700080327 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3597E1D2BF7C700080327 /* AppDelegate.m */; };
+		E5C359821D2BF7C700080327 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C359811D2BF7C700080327 /* ViewController.m */; };
+		E5C359871D2BF7C700080327 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5C359861D2BF7C700080327 /* Assets.xcassets */; };
+		E5C3598A1D2BF7C700080327 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5C359881D2BF7C700080327 /* LaunchScreen.storyboard */; };
+		E5C3599D1D2C086C00080327 /* libOFRequestManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C359961D2BF7D200080327 /* libOFRequestManager.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E5C359951D2BF7D200080327 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5C359911D2BF7D200080327 /* OFRequestManager.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E5C359621D2BF64E00080327;
+			remoteInfo = OFRequestManager;
+		};
+		E5C359971D2BF7DC00080327 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5C359911D2BF7D200080327 /* OFRequestManager.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E5C359611D2BF64E00080327;
+			remoteInfo = OFRequestManager;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4F7FC86ED8DF6C86D445299B /* Pods-OFRequestManagerDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OFRequestManagerDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-OFRequestManagerDemo/Pods-OFRequestManagerDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		524214E97D6CE34279A8C30D /* Pods-OFRequestManagerDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OFRequestManagerDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-OFRequestManagerDemo/Pods-OFRequestManagerDemo.release.xcconfig"; sourceTree = "<group>"; };
+		BD586423AD0D473F9AE6C6C8 /* libPods-OFRequestManagerDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OFRequestManagerDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5C359771D2BF7C700080327 /* OFRequestManagerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OFRequestManagerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5C3597B1D2BF7C700080327 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E5C3597D1D2BF7C700080327 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		E5C3597E1D2BF7C700080327 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		E5C359801D2BF7C700080327 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		E5C359811D2BF7C700080327 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E5C359861D2BF7C700080327 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E5C359891D2BF7C700080327 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E5C3598B1D2BF7C700080327 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5C359911D2BF7D200080327 /* OFRequestManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OFRequestManager.xcodeproj; path = ../../OFRequestManager.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E5C359741D2BF7C700080327 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5C3599D1D2C086C00080327 /* libOFRequestManager.a in Frameworks */,
+				5CF121241D8BCB48535D4AB3 /* libPods-OFRequestManagerDemo.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C2A806E98EFACE5AA3FD6B94 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4F7FC86ED8DF6C86D445299B /* Pods-OFRequestManagerDemo.debug.xcconfig */,
+				524214E97D6CE34279A8C30D /* Pods-OFRequestManagerDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D0237EBA00CD231DED116C7B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD586423AD0D473F9AE6C6C8 /* libPods-OFRequestManagerDemo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E5C3596E1D2BF7C700080327 = {
+			isa = PBXGroup;
+			children = (
+				E5C359791D2BF7C700080327 /* OFRequestManagerDemo */,
+				E5C359781D2BF7C700080327 /* Products */,
+				C2A806E98EFACE5AA3FD6B94 /* Pods */,
+				D0237EBA00CD231DED116C7B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E5C359781D2BF7C700080327 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E5C359771D2BF7C700080327 /* OFRequestManagerDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E5C359791D2BF7C700080327 /* OFRequestManagerDemo */ = {
+			isa = PBXGroup;
+			children = (
+				E5C359911D2BF7D200080327 /* OFRequestManager.xcodeproj */,
+				E5C3597D1D2BF7C700080327 /* AppDelegate.h */,
+				E5C3597E1D2BF7C700080327 /* AppDelegate.m */,
+				E5C359801D2BF7C700080327 /* ViewController.h */,
+				E5C359811D2BF7C700080327 /* ViewController.m */,
+				E5C359861D2BF7C700080327 /* Assets.xcassets */,
+				E5C359881D2BF7C700080327 /* LaunchScreen.storyboard */,
+				E5C3598B1D2BF7C700080327 /* Info.plist */,
+				E5C3597A1D2BF7C700080327 /* Supporting Files */,
+			);
+			path = OFRequestManagerDemo;
+			sourceTree = "<group>";
+		};
+		E5C3597A1D2BF7C700080327 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E5C3597B1D2BF7C700080327 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E5C359921D2BF7D200080327 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E5C359961D2BF7D200080327 /* libOFRequestManager.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E5C359761D2BF7C700080327 /* OFRequestManagerDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5C3598E1D2BF7C700080327 /* Build configuration list for PBXNativeTarget "OFRequestManagerDemo" */;
+			buildPhases = (
+				0195E9F94788AC5B9E222DF1 /* 📦 Check Pods Manifest.lock */,
+				E5C359731D2BF7C700080327 /* Sources */,
+				E5C359741D2BF7C700080327 /* Frameworks */,
+				E5C359751D2BF7C700080327 /* Resources */,
+				8409A10C93C7DABF27E5E428 /* 📦 Embed Pods Frameworks */,
+				A62A6582718072D87324CD96 /* 📦 Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E5C359981D2BF7DC00080327 /* PBXTargetDependency */,
+			);
+			name = OFRequestManagerDemo;
+			productName = OFRequestManagerDemo;
+			productReference = E5C359771D2BF7C700080327 /* OFRequestManagerDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E5C3596F1D2BF7C700080327 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Oliver Franke";
+				TargetAttributes = {
+					E5C359761D2BF7C700080327 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = E5C359721D2BF7C700080327 /* Build configuration list for PBXProject "OFRequestManagerDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E5C3596E1D2BF7C700080327;
+			productRefGroup = E5C359781D2BF7C700080327 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E5C359921D2BF7D200080327 /* Products */;
+					ProjectRef = E5C359911D2BF7D200080327 /* OFRequestManager.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				E5C359761D2BF7C700080327 /* OFRequestManagerDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E5C359961D2BF7D200080327 /* libOFRequestManager.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOFRequestManager.a;
+			remoteRef = E5C359951D2BF7D200080327 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E5C359751D2BF7C700080327 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5C3598A1D2BF7C700080327 /* LaunchScreen.storyboard in Resources */,
+				E5C359871D2BF7C700080327 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0195E9F94788AC5B9E222DF1 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8409A10C93C7DABF27E5E428 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-OFRequestManagerDemo/Pods-OFRequestManagerDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A62A6582718072D87324CD96 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-OFRequestManagerDemo/Pods-OFRequestManagerDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E5C359731D2BF7C700080327 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5C359821D2BF7C700080327 /* ViewController.m in Sources */,
+				E5C3597F1D2BF7C700080327 /* AppDelegate.m in Sources */,
+				E5C3597C1D2BF7C700080327 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E5C359981D2BF7DC00080327 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = OFRequestManager;
+			targetProxy = E5C359971D2BF7DC00080327 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E5C359881D2BF7C700080327 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E5C359891D2BF7C700080327 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E5C3598C1D2BF7C700080327 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E5C3598D1D2BF7C700080327 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E5C3598F1D2BF7C700080327 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4F7FC86ED8DF6C86D445299B /* Pods-OFRequestManagerDemo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"../OFRequestManager/**",
+				);
+				INFOPLIST_FILE = OFRequestManagerDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Ofranke.OFRequestManagerDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E5C359901D2BF7C700080327 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 524214E97D6CE34279A8C30D /* Pods-OFRequestManagerDemo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"../OFRequestManager/**",
+				);
+				INFOPLIST_FILE = OFRequestManagerDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Ofranke.OFRequestManagerDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E5C359721D2BF7C700080327 /* Build configuration list for PBXProject "OFRequestManagerDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5C3598C1D2BF7C700080327 /* Debug */,
+				E5C3598D1D2BF7C700080327 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E5C3598E1D2BF7C700080327 /* Build configuration list for PBXNativeTarget "OFRequestManagerDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5C3598F1D2BF7C700080327 /* Debug */,
+				E5C359901D2BF7C700080327 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E5C3596F1D2BF7C700080327 /* Project object */;
+}
