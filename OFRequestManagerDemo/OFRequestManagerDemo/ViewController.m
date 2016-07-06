@@ -13,6 +13,8 @@
 @interface ViewController ()
 @property (strong, nonatomic) UIButton *testGetRequestBt;
 @property (strong, nonatomic) UIButton *testPostRequestBt;
+@property (strong, nonatomic) UIButton *testDownloadRequestBt;
+@property (strong, nonatomic) UILabel *remainingTimeLabel;
 @property (strong, nonatomic) UITextView *resultTV;
 
 @property (copy, nonatomic) NSString *getUrl;
@@ -53,8 +55,22 @@
     [self.testPostRequestBt addTarget:self action:@selector(testPostButtonDidPress:) forControlEvents:UIControlEventTouchUpInside];
     [self.testPostRequestBt setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.testPostRequestBt sizeToFit];
-    self.testPostRequestBt.frame = CGRectMake(70, 30, self.testPostRequestBt.frame.size.width, self.testPostRequestBt.frame.size.height);
+    self.testPostRequestBt.frame = CGRectMake(75, 30, self.testPostRequestBt.frame.size.width, self.testPostRequestBt.frame.size.height);
     [self.view addSubview:self.testPostRequestBt];
+    
+    self.testDownloadRequestBt = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.testDownloadRequestBt setTitle:@"Test Downloadfile" forState:UIControlStateNormal];
+    [self.testDownloadRequestBt addTarget:self action:@selector(testDownloadFileButtonDidPress:) forControlEvents:UIControlEventTouchUpInside];
+    [self.testDownloadRequestBt setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.testDownloadRequestBt sizeToFit];
+    self.testDownloadRequestBt.frame = CGRectMake(175, 30, self.testDownloadRequestBt.frame.size.width, self.testDownloadRequestBt.frame.size.height);
+    [self.view addSubview:self.testDownloadRequestBt];
+    
+    self.remainingTimeLabel = [UILabel new];
+    self.remainingTimeLabel.text = @"Here you will see the remaining time";
+    [self.remainingTimeLabel sizeToFit];
+    self.remainingTimeLabel.frame = CGRectMake(0, 80, self.remainingTimeLabel.frame.size.width, self.remainingTimeLabel.frame.size.height);
+    [self.view addSubview:self.remainingTimeLabel];
     
     self.resultTV = [[UITextView alloc] initWithFrame:CGRectMake(0, 150, self.view.frame.size.width, self.view.frame.size.height - 150)];
     [self.view addSubview:self.resultTV];
@@ -106,7 +122,15 @@
              };
 }
 
+- (NSString*)downloadURL {
+//    return @"https://gilly.berlin/wp-content/uploads/2008/11/cat-content-4.jpg";
+    return @"http://widewallpaper.info/wp-content/uploads/2016/01/Nature-autumn-4k-uhd-wallpaper.jpeg";
+    return @"http://dashousetear.de/images/eigene/othermedia/DasHouseTear_-_Microbeat.mp3";
+}
 
+- (NSString*)downloadFilename {
+    return @"Image1.jpeg";
+}
 
 #pragma mark - Buttons
 
@@ -134,4 +158,34 @@
                                   }];
 }
 
+- (void)testDownloadFileButtonDidPress:(id)sender {
+    kRequestManagerSessionStatus status = [[OFRequestManager sharedManager] downloadFileFromURL:[self downloadURL]
+                                                                                       withName:[self downloadFilename]
+                                                                               inDirectoryNamed:nil
+                                                                                  progressBlock:^(NSProgress * _Nonnull progress) {
+//                                                                                      NSLog(@"progress %@",progress);
+                                                                                  }
+                                                                                  remainingTime:nil
+                                                                                completionBlock:^(kRequestManagerSessionStatus status, NSURL * _Nonnull directory, NSString * _Nonnull fileName) {
+                                                                                      if (status == kRequestManagerSessionStatusFileCompleted) {
+                                                                                          self.resultTV.text = [NSString stringWithFormat:@"Downloaded file with name:%@\nTo path:%@\n",fileName,directory];
+                                                                                      } else if (status == kRequestManagerSessionStatusAlreadyDownloaded) {
+                                                                                          self.resultTV.text = [NSString stringWithFormat:@"Downloaded file exchanged with name:%@\nTo path:%@\n",fileName,directory];
+                                                                                      }
+                                                                                  }
+                                           
+                                           
+                                                                                        failure:^(NSURLResponse * _Nonnull response, NSError * _Nonnull error, kRequestManagerSessionStatus status, NSURL * _Nonnull directory, NSString * _Nonnull fileName) {
+                                                                                      if (error) {
+                                                                                          self.resultTV.text = [NSString stringWithFormat:@"Failed to download with result %@",response];
+                                                                                      }
+                                                                                  }
+                                           
+                                           
+                                                                           enableBackgroundMode:^(NSURLSession *session){
+                                                                               NSLog(@"task finished in background");
+                                                                           }];
+    
+    NSLog(@"session state was %u",status);
+}
 @end

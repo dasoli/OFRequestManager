@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E59611251D2D0E3D004C065D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59611241D2D0E3D004C065D /* UIKit.framework */; };
+		E59611271D2D0E42004C065D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59611261D2D0E42004C065D /* Foundation.framework */; };
 		E5C359661D2BF64E00080327 /* OFRequestManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E5C359651D2BF64E00080327 /* OFRequestManager.h */; };
 		E5C359681D2BF64E00080327 /* OFRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C359671D2BF64E00080327 /* OFRequestManager.m */; };
 		FC020EFDAC6045285A70BE4B /* libPods-OFRequestManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D01D50AB9758FF35051ABC3 /* libPods-OFRequestManager.a */; };
@@ -29,6 +31,8 @@
 		16CE3FC58C018475C4EE5113 /* Pods-OFRequestManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OFRequestManager.release.xcconfig"; path = "Pods/Target Support Files/Pods-OFRequestManager/Pods-OFRequestManager.release.xcconfig"; sourceTree = "<group>"; };
 		4A82338AAAD9BC2AB44A4E9F /* Pods-OFRequestManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OFRequestManager.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OFRequestManager/Pods-OFRequestManager.debug.xcconfig"; sourceTree = "<group>"; };
 		4D01D50AB9758FF35051ABC3 /* libPods-OFRequestManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OFRequestManager.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E59611241D2D0E3D004C065D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E59611261D2D0E42004C065D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E5C359621D2BF64E00080327 /* libOFRequestManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOFRequestManager.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5C359651D2BF64E00080327 /* OFRequestManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFRequestManager.h; sourceTree = "<group>"; };
 		E5C359671D2BF64E00080327 /* OFRequestManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFRequestManager.m; sourceTree = "<group>"; };
@@ -39,6 +43,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E59611271D2D0E42004C065D /* Foundation.framework in Frameworks */,
+				E59611251D2D0E3D004C065D /* UIKit.framework in Frameworks */,
 				FC020EFDAC6045285A70BE4B /* libPods-OFRequestManager.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +91,8 @@
 		ECFB07D5359F98BE1F59E4B8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E59611261D2D0E42004C065D /* Foundation.framework */,
+				E59611241D2D0E3D004C065D /* UIKit.framework */,
 				4D01D50AB9758FF35051ABC3 /* libPods-OFRequestManager.a */,
 			);
 			name = Frameworks;
