@@ -8,7 +8,6 @@ This manager will help you to interact as fast as possible with several types of
 * post requests also with base url functionality
 * put
 * delete
-
 * upload files
 * upload files in background
 * download files
@@ -39,14 +38,13 @@ Simple get with automatically adding of params to url:
 [[OFRequestManager sharedManager] Get:@"Url"
                            parameters:@{ param1 : value }
                              progress:nil
-                              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
+                              success:^(NSURLSessionDataTask * Nonnull task, id  Nullable responseObject)
                               {
                               }
-                              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
+                              failure:^(NSURLSessionDataTask * Nullable task, NSError * Nonnull error)
                               {
                               }];
 ```
-
 
 If you want to do use post or other base url related operations:
 
@@ -65,15 +63,16 @@ Example Post:
 [[OFRequestManager sharedManager] POST:@"Hook1"
                            parameters:@{ param1 : value }
                              progress:nil
-                              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
+                              success:^(NSURLSessionDataTask * Nonnull task, id  Nullable responseObject)
                               {
                               }
-                              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
+                              failure:^(NSURLSessionDataTask * Nullable task, NSError * Nonnull error)
                               {
                               }];
 ```
 
-Example Post:
+Example Download without Background:
+
 ```objc
 [[OFRequestManager sharedManager] downloadFileFromURL:@"an url"
                                              withName:@"a name for a file"
@@ -89,9 +88,9 @@ Example Post:
                                                              });
                                           }
                                       completionBlock:^(kRequestManagerSessionStatus status,
-                                                        NSURL * _Nonnull directory,
-                                                        NSString * _Nonnull fileName,
-                                                        NSURLResponse * _Nonnull response) {
+                                                        NSURL * Nonnull directory,
+                                                        NSString * Nonnull fileName,
+                                                        NSURLResponse * Nonnull response) {
 
                                           if (status == kRequestManagerSessionStatusFileCompleted) {
 
@@ -99,11 +98,11 @@ Example Post:
 
                                           }
                                       }
-                                         failureBlock:^(NSURLResponse * _Nonnull response,
-                                                        NSError * _Nonnull error,
+                                         failureBlock:^(NSURLResponse * Nonnull response,
+                                                        NSError * Nonnull error,
                                                         kRequestManagerSessionStatus status,
-                                                        NSURL * _Nonnull directory,
-                                                        NSString * _Nonnull fileName) {
+                                                        NSURL * Nonnull directory,
+                                                        NSString * Nonnull fileName) {
                                              if (error) {
                                                  //handle
                                              }
