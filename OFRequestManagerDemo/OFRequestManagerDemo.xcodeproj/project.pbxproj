@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5CF121241D8BCB48535D4AB3 /* libPods-OFRequestManagerDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD586423AD0D473F9AE6C6C8 /* libPods-OFRequestManagerDemo.a */; };
+		E50E1CA01D2FBED0006B08CE /* nature4k.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E50E1C9F1D2FBED0006B08CE /* nature4k.jpeg */; };
 		E5C3597C1D2BF7C700080327 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3597B1D2BF7C700080327 /* main.m */; };
 		E5C3597F1D2BF7C700080327 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3597E1D2BF7C700080327 /* AppDelegate.m */; };
 		E5C359821D2BF7C700080327 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C359811D2BF7C700080327 /* ViewController.m */; };
@@ -17,6 +18,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E50E1CA21D2FBED0006B08CE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5C359911D2BF7D200080327 /* OFRequestManager.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E5A057501D2E5E5600B05C45;
+			remoteInfo = RequestManagerTests;
+		};
 		E5C359951D2BF7D200080327 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E5C359911D2BF7D200080327 /* OFRequestManager.xcodeproj */;
@@ -37,6 +45,7 @@
 		4F7FC86ED8DF6C86D445299B /* Pods-OFRequestManagerDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OFRequestManagerDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-OFRequestManagerDemo/Pods-OFRequestManagerDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		524214E97D6CE34279A8C30D /* Pods-OFRequestManagerDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OFRequestManagerDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-OFRequestManagerDemo/Pods-OFRequestManagerDemo.release.xcconfig"; sourceTree = "<group>"; };
 		BD586423AD0D473F9AE6C6C8 /* libPods-OFRequestManagerDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OFRequestManagerDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E50E1C9F1D2FBED0006B08CE /* nature4k.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nature4k.jpeg; sourceTree = "<group>"; };
 		E5C359771D2BF7C700080327 /* OFRequestManagerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OFRequestManagerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5C3597B1D2BF7C700080327 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E5C3597D1D2BF7C700080327 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -100,6 +109,7 @@
 		E5C359791D2BF7C700080327 /* OFRequestManagerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				E50E1C9F1D2FBED0006B08CE /* nature4k.jpeg */,
 				E5C359911D2BF7D200080327 /* OFRequestManager.xcodeproj */,
 				E5C3597D1D2BF7C700080327 /* AppDelegate.h */,
 				E5C3597E1D2BF7C700080327 /* AppDelegate.m */,
@@ -125,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				E5C359961D2BF7D200080327 /* libOFRequestManager.a */,
+				E50E1CA31D2FBED0006B08CE /* RequestManagerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -197,6 +208,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		E50E1CA31D2FBED0006B08CE /* RequestManagerTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RequestManagerTests.xctest;
+			remoteRef = E50E1CA21D2FBED0006B08CE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		E5C359961D2BF7D200080327 /* libOFRequestManager.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -212,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5C3598A1D2BF7C700080327 /* LaunchScreen.storyboard in Resources */,
+				E50E1CA01D2FBED0006B08CE /* nature4k.jpeg in Resources */,
 				E5C359871D2BF7C700080327 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

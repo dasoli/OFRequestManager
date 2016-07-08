@@ -105,7 +105,7 @@
 }
 
 - (NSURL*)postBaseUrl {
-    return [NSURL URLWithString:@"baseUrl"];
+    return [NSURL URLWithString:@"https://demo5951492.mockable.io"];
 }
 
 - (NSString*)postHook1 {
@@ -156,7 +156,7 @@
 }
 
 - (void)testPostButtonDidPress:(id)sender {
-    [[OFRequestManager sharedManager] POST:self.postHook1
+    [[OFRequestManager sharedManager] POST:@"http://demo7682029.mockable.io/multiparttest"
                                 parameters:self.postParams
                                   progress:nil
                                    success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -168,18 +168,23 @@
 }
 
 - (void)testMultipartButtonDidPress:(id)sender {
-//    [[OFRequestManager sharedManager] POST:@"https://posttestserver.com/"
-//                                parameters:[self postHook1]
-//                 constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-//                     <#code#>
-//                 }
-//                                  progress:nil
-//                                   success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                                       <#code#>
-//                                   }
-//                                   failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//                                       <#code#>
-//                                   }
+    [[OFRequestManager sharedManager] POST:@"olisMultiPart"
+                                parameters:[self postParams]
+                 constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                     NSURL *fileRef = [[NSBundle mainBundle] URLForResource:@"nature4k" withExtension:@".jpeg"];
+                     NSError *error;
+                     [formData appendPartWithFileURL:fileRef name:@"a picture" fileName:@"nature4k" mimeType:@"image/jpeg" error:&error];
+                     if (error) {
+                         NSLog(@"Error with appending an image %@",error);
+                     }
+                 }
+                                  progress:nil
+                                   success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                                       NSLog(@"done");
+                                   }
+                                   failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                       NSLog(@"failed with error: %@",error);
+                                   }];
 }
 
 - (void)testDownloadFileButtonDidPress:(id)sender {
