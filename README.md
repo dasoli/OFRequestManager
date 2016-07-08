@@ -73,6 +73,45 @@ Example Post:
                               }];
 ```
 
+Example Post:
+```objc
+[[OFRequestManager sharedManager] downloadFileFromURL:@"an url"
+                                             withName:@"a name for a file"
+                                     inDirectoryNamed:nil
+                                        progressBlock:nil
+                                          statusBlock:^(NSTimeInterval seconds,
+                                                        CGFloat percentDone,
+                                                        CGFloat byteRemaining,
+                                                        CGFloat bytesWritten) {
+                                              dispatch_async(dispatch_get_main_queue(), ^()
+                                                             {
+                                                                 //update ui?
+                                                             });
+                                          }
+                                      completionBlock:^(kRequestManagerSessionStatus status,
+                                                        NSURL * _Nonnull directory,
+                                                        NSString * _Nonnull fileName,
+                                                        NSURLResponse * _Nonnull response) {
+
+                                          if (status == kRequestManagerSessionStatusFileCompleted) {
+
+                                          } else if (status == kRequestManagerSessionStatusAlreadyDownloaded) {
+
+                                          }
+                                      }
+                                         failureBlock:^(NSURLResponse * _Nonnull response,
+                                                        NSError * _Nonnull error,
+                                                        kRequestManagerSessionStatus status,
+                                                        NSURL * _Nonnull directory,
+                                                        NSString * _Nonnull fileName) {
+                                             if (error) {
+                                                 //handle
+                                             }
+                                         }
+                            enableBackgroundModeBlock:nil];
+```
+If you want to enable Background downloading, put in a backgroundBlock. (actually this is bugging state)
+
 ## License
 
 See the [LICENSE](LICENSE) file for more information.
