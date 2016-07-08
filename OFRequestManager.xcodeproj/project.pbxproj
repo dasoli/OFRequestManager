@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9AC430169593A170C55B44A8 /* libPods-RequestManagerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8C7ECE70FB62AD9E93E863 /* libPods-RequestManagerTests.a */; };
 		E59611251D2D0E3D004C065D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59611241D2D0E3D004C065D /* UIKit.framework */; };
 		E59611271D2D0E42004C065D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59611261D2D0E42004C065D /* Foundation.framework */; };
+		E5A057531D2E5E5600B05C45 /* RequestManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A057521D2E5E5600B05C45 /* RequestManagerTests.m */; };
+		E5A057551D2E5E5600B05C45 /* libOFRequestManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C359621D2BF64E00080327 /* libOFRequestManager.a */; };
 		E5C359661D2BF64E00080327 /* OFRequestManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E5C359651D2BF64E00080327 /* OFRequestManager.h */; };
 		E5C359681D2BF64E00080327 /* OFRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C359671D2BF64E00080327 /* OFRequestManager.m */; };
 		FC020EFDAC6045285A70BE4B /* libPods-OFRequestManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D01D50AB9758FF35051ABC3 /* libPods-OFRequestManager.a */; };
@@ -28,17 +31,32 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D8C7ECE70FB62AD9E93E863 /* libPods-RequestManagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RequestManagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		16CE3FC58C018475C4EE5113 /* Pods-OFRequestManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OFRequestManager.release.xcconfig"; path = "Pods/Target Support Files/Pods-OFRequestManager/Pods-OFRequestManager.release.xcconfig"; sourceTree = "<group>"; };
+		3633DC4BBAA2FB27101904BF /* Pods-RequestManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RequestManagerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RequestManagerTests/Pods-RequestManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4A82338AAAD9BC2AB44A4E9F /* Pods-OFRequestManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OFRequestManager.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OFRequestManager/Pods-OFRequestManager.debug.xcconfig"; sourceTree = "<group>"; };
 		4D01D50AB9758FF35051ABC3 /* libPods-OFRequestManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OFRequestManager.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		68293D0AA53396295C90B024 /* Pods-RequestManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RequestManagerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RequestManagerTests/Pods-RequestManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 		E59611241D2D0E3D004C065D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E59611261D2D0E42004C065D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E5A057501D2E5E5600B05C45 /* RequestManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RequestManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5A057521D2E5E5600B05C45 /* RequestManagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RequestManagerTests.m; sourceTree = "<group>"; };
+		E5A057541D2E5E5600B05C45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5C359621D2BF64E00080327 /* libOFRequestManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOFRequestManager.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5C359651D2BF64E00080327 /* OFRequestManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OFRequestManager.h; sourceTree = "<group>"; };
 		E5C359671D2BF64E00080327 /* OFRequestManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OFRequestManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E5A0574D1D2E5E5600B05C45 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5A057551D2E5E5600B05C45 /* libOFRequestManager.a in Frameworks */,
+				9AC430169593A170C55B44A8 /* libPods-RequestManagerTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E5C3595F1D2BF64E00080327 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -57,14 +75,26 @@
 			children = (
 				4A82338AAAD9BC2AB44A4E9F /* Pods-OFRequestManager.debug.xcconfig */,
 				16CE3FC58C018475C4EE5113 /* Pods-OFRequestManager.release.xcconfig */,
+				3633DC4BBAA2FB27101904BF /* Pods-RequestManagerTests.debug.xcconfig */,
+				68293D0AA53396295C90B024 /* Pods-RequestManagerTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		E5A057511D2E5E5600B05C45 /* RequestManagerTests */ = {
+			isa = PBXGroup;
+			children = (
+				E5A057521D2E5E5600B05C45 /* RequestManagerTests.m */,
+				E5A057541D2E5E5600B05C45 /* Info.plist */,
+			);
+			path = RequestManagerTests;
 			sourceTree = "<group>";
 		};
 		E5C359591D2BF64E00080327 = {
 			isa = PBXGroup;
 			children = (
 				E5C359641D2BF64E00080327 /* OFRequestManager */,
+				E5A057511D2E5E5600B05C45 /* RequestManagerTests */,
 				E5C359631D2BF64E00080327 /* Products */,
 				2054FECA41F0C193A7FC5AD0 /* Pods */,
 				ECFB07D5359F98BE1F59E4B8 /* Frameworks */,
@@ -75,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				E5C359621D2BF64E00080327 /* libOFRequestManager.a */,
+				E5A057501D2E5E5600B05C45 /* RequestManagerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,6 +125,7 @@
 				E59611261D2D0E42004C065D /* Foundation.framework */,
 				E59611241D2D0E3D004C065D /* UIKit.framework */,
 				4D01D50AB9758FF35051ABC3 /* libPods-OFRequestManager.a */,
+				0D8C7ECE70FB62AD9E93E863 /* libPods-RequestManagerTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -101,6 +133,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E5A0574F1D2E5E5600B05C45 /* RequestManagerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5A0575A1D2E5E5600B05C45 /* Build configuration list for PBXNativeTarget "RequestManagerTests" */;
+			buildPhases = (
+				AB7CF8E70B99B982E8BAEDE7 /* 📦 Check Pods Manifest.lock */,
+				E5A0574C1D2E5E5600B05C45 /* Sources */,
+				E5A0574D1D2E5E5600B05C45 /* Frameworks */,
+				E5A0574E1D2E5E5600B05C45 /* Resources */,
+				21645557570EA53ED5C8D9BD /* 📦 Embed Pods Frameworks */,
+				8732700BCAA12F89A031D4AA /* 📦 Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RequestManagerTests;
+			productName = RequestManagerTests;
+			productReference = E5A057501D2E5E5600B05C45 /* RequestManagerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E5C359611D2BF64E00080327 /* OFRequestManager */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E5C3596B1D2BF64E00080327 /* Build configuration list for PBXNativeTarget "OFRequestManager" */;
@@ -129,6 +181,9 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Oliver Franke";
 				TargetAttributes = {
+					E5A0574F1D2E5E5600B05C45 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 					E5C359611D2BF64E00080327 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
@@ -147,11 +202,67 @@
 			projectRoot = "";
 			targets = (
 				E5C359611D2BF64E00080327 /* OFRequestManager */,
+				E5A0574F1D2E5E5600B05C45 /* RequestManagerTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		E5A0574E1D2E5E5600B05C45 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXShellScriptBuildPhase section */
+		21645557570EA53ED5C8D9BD /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RequestManagerTests/Pods-RequestManagerTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8732700BCAA12F89A031D4AA /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RequestManagerTests/Pods-RequestManagerTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB7CF8E70B99B982E8BAEDE7 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		CE9AC44AA543F2A37C356028 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -185,6 +296,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E5A0574C1D2E5E5600B05C45 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5A057531D2E5E5600B05C45 /* RequestManagerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E5C3595E1D2BF64E00080327 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -196,6 +315,28 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		E5A057581D2E5E5600B05C45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3633DC4BBAA2FB27101904BF /* Pods-RequestManagerTests.debug.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = RequestManagerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Ofranke.RequestManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E5A057591D2E5E5600B05C45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68293D0AA53396295C90B024 /* Pods-RequestManagerTests.release.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = RequestManagerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Ofranke.RequestManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		E5C359691D2BF64E00080327 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -301,6 +442,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E5A0575A1D2E5E5600B05C45 /* Build configuration list for PBXNativeTarget "RequestManagerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5A057581D2E5E5600B05C45 /* Debug */,
+				E5A057591D2E5E5600B05C45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E5C3595D1D2BF64E00080327 /* Build configuration list for PBXProject "OFRequestManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

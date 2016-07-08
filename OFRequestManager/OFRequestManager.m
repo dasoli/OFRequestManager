@@ -10,7 +10,7 @@
 
 @interface OFRequestManager () <NSURLSessionDelegate>
 @property (nonatomic, strong) NSMutableDictionary *downloadStore;
-@property (nonatomic, strong) NSMutableDictionary *downloadTimesStores;
+@property (nonatomic, strong) NSMutableDictionary *calculationTimesStore;
 @property (nonatomic, getter=uploadTasks) NSArray <NSURLSessionUploadTask *> *uploadTasks;
 @property (nonatomic, getter=downloadTasks) NSArray <NSURLSessionDownloadTask *> *downloadTasks;
 @property (nonatomic, getter=dataTasks) NSArray <NSURLSessionDataTask *> *dataTasks;
@@ -39,7 +39,7 @@ static OFRequestManager *sharedInstance = nil;
 - (void)setup
 //----------------------------------------------------------------------------------------------
 {
-    self.downloadTimesStores = [NSMutableDictionary new];
+    self.calculationTimesStore = [NSMutableDictionary new];
 }
 
 //----------------------------------------------------------------------------------------------
@@ -175,6 +175,40 @@ static OFRequestManager *sharedInstance = nil;
     return _showNetworkIndicator;
 }
 
+//----------------------------------------------------------------------------------------------
+- (nullable NSProgress *)progressForTask:(NSURLSessionTask *)task
+//----------------------------------------------------------------------------------------------
+{
+    NSProgress *progress = nil;
+    
+    if ([task isKindOfClass:[NSURLSessionDownloadTask class]] && (_urlSessionManager || _backgroundSessionManager)) {
+        if (_urlSessionManager && !_backgroundSessionManager) {
+            progress = [_urlSessionManager downloadProgressForTask:task];
+        } else if (!_urlSessionManager && _backgroundSessionManager) {
+            progress = [_backgroundSessionManager downloadProgressForTask:task];
+        }
+        else if (_urlSessionManager && _backgroundSessionManager) {
+            progress = [_urlSessionManager downloadProgressForTask:task];
+            if (!progress) {
+                progress = [_backgroundSessionManager downloadProgressForTask:task];
+            }
+        }
+    } else if ([task isKindOfClass:[NSURLSessionUploadTask class]] && (_urlSessionManager || _backgroundSessionManager)) {
+        if (_urlSessionManager && !_backgroundSessionManager) {
+            progress = [_urlSessionManager uploadProgressForTask:task];
+        } else if (!_urlSessionManager && _backgroundSessionManager) {
+            progress = [_backgroundSessionManager uploadProgressForTask:task];
+        }
+        else if (_urlSessionManager && _backgroundSessionManager) {
+            progress = [_urlSessionManager uploadProgressForTask:task];
+            if (!progress) {
+                progress = [_backgroundSessionManager uploadProgressForTask:task];
+            }
+        }
+    }
+    return progress;
+}
+
 //--------------------------------------------------------------------------------
 - (AFHTTPSessionManager *)httpSessionManager
 //--------------------------------------------------------------------------------
@@ -263,20 +297,6 @@ static OFRequestManager *sharedInstance = nil;
                                progress:downloadProgress
                                 success:success
                                 failure:failure];
-}
-
-#pragma mark - Head
-//----------------------------------------------------------------------------------------------
-- (nullable NSURLSessionDataTask*)HEAD:(NSString *)URLString
-                            parameters:(id)parameters
-                               success:(void (^)(NSURLSessionDataTask * _Nonnull))success
-                               failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
-//----------------------------------------------------------------------------------------------
-{
-    return [self.httpSessionManager HEAD:URLString
-                              parameters:parameters
-                                 success:success
-                                 failure:failure];
 }
 
 #pragma mark - Post
@@ -382,8 +402,270 @@ static OFRequestManager *sharedInstance = nil;
                                    failure:failure];
 }
 
+#pragma mark - Head
+//----------------------------------------------------------------------------------------------
+- (nullable NSURLSessionDataTask*)HEAD:(NSString *)URLString
+                            parameters:(id)parameters
+                               success:(void (^)(NSURLSessionDataTask * _Nonnull))success
+                               failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
+//----------------------------------------------------------------------------------------------
+{
+    return [self.httpSessionManager HEAD:URLString
+                              parameters:parameters
+                                 success:success
+                                 failure:failure];
+}
+
+#pragma mark -
+//TODO: Check if a Task with the current url is running, so not other is created.
 #pragma mark - Download
 
+//----------------------------------------------------------------------------------------------
+- (nullable NSURLSessionDownloadTask *)downloadFileFromURL:(NSString *)URLString
+                                                  withName:(nullable NSString *)fileName
+                                          inDirectoryNamed:(nullable NSURL *)directory
+                                             progressBlock:(nullable void (^)(NSProgress *progress)) progressBlock
+                                               statusBlock:(nullable void (^)(NSTimeInterval seconds,
+                                                                              CGFloat percentDone,
+                                                                              CGFloat byteRemaining,
+                                                                              CGFloat bytesWritten)) statusBlock
+                                           completionBlock:(nullable void (^)(kRequestManagerSessionStatus status,
+                                                                              NSURL *directory,
+                                                                              NSString *fileName,
+                                                                              NSURLResponse * _Nonnull response)) completionBlock
+                                              failureBlock:(nullable void (^)(NSURLResponse * _Nonnull response,
+                                                                              NSError *error,
+                                                                              kRequestManagerSessionStatus status,
+                                                                              NSURL *directory,
+                                                                              NSString *fileName)) failure
+                                 enableBackgroundModeBlock:(nullable void (^)(NSURLSession *session)) backgroundBlock
+//----------------------------------------------------------------------------------------------
+{
+    NSURL *url = [NSURL URLWithString:URLString];
+    if (!fileName) {
+        fileName = [URLString lastPathComponent];
+    }
+    if (!directory) {
+        directory = [self cachesDirectoryUrlPath];
+    }
+    
+    NSURL *finalPathToWrite = [directory URLByAppendingPathComponent:fileName];
+    NSURLSessionDownloadTask *localDownloadTask;
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    AFURLSessionManager *manager;
+    if (backgroundBlock) {
+        manager = self.backgroundSessionManager;
+        [self.backgroundSessionManager setDidFinishEventsForBackgroundURLSessionBlock:backgroundBlock];
+    } else {
+        manager = self.urlSessionManager;
+    }
+    
+    localDownloadTask = [manager downloadTaskWithRequest:request
+                                                progress:progressBlock
+                                             destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+                                                 return finalPathToWrite;
+                                             }
+                                       completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+                                           if (failure && error) {
+                                               kRequestManagerSessionStatus status = kRequestManagerSessionStatusErrored;
+                                               failure(response, error, status, directory, fileName);
+                                           } else if(completionBlock && !error) {
+                                               
+                                               kRequestManagerSessionStatus status;
+                                               status = kRequestManagerSessionStatusFileCompleted;
+                                               [self.downloadStore setObject:filePath forKey:fileName];
+                                               [self.calculationTimesStore removeObjectForKey:@(localDownloadTask.taskIdentifier)];
+                                               completionBlock(status, filePath, fileName, response);
+                                           }
+                                       }];
+    
+    if (statusBlock) {
+        [self setStatusBlockForDownloadManagar:manager
+                                      withTask:localDownloadTask
+                                   statusBlock:statusBlock];
+    }
+    
+    [localDownloadTask resume];
+    [self.calculationTimesStore setObject:[NSDate date] forKey:@(localDownloadTask.taskIdentifier)];
+    
+    return localDownloadTask;
+}
+
+#pragma mark - Upload
+
+//----------------------------------------------------------------------------------------------
+- (nullable NSURLSessionUploadTask *)uploadFile:(NSURL *)fileURL
+                                          toUrl:(NSString *)URLString
+                                  progressBlock:(nullable void(^)(NSProgress *progress)) progressBlock
+                                    statusBlock:(nullable void (^)(NSTimeInterval seconds,
+                                                                   CGFloat percentDone,
+                                                                   CGFloat byteRemaining,
+                                                                   CGFloat bytesWritten)) statusBlock
+                                completionBlock:(nullable void(^)(kRequestManagerSessionStatus status,
+                                                                  id response)) completionBlock
+                                        failure:(nullable void (^)(id response,
+                                                                   NSError *error,
+                                                                   kRequestManagerSessionStatus status)) failureBlock
+                           enableBackgroundMode:(nullable void (^)(NSURLSession *session)) backgroundBlock
+//----------------------------------------------------------------------------------------------
+{
+    if (!fileURL) {
+        return nil;
+    }
+    NSURL *url = [NSURL URLWithString:URLString];
+    NSURLSessionUploadTask *localUploadTask;
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    AFURLSessionManager *manager;
+    if (backgroundBlock) {
+        manager = self.backgroundSessionManager;
+        [self.backgroundSessionManager setDidFinishEventsForBackgroundURLSessionBlock:backgroundBlock];
+    } else {
+        manager = self.urlSessionManager;
+    }
+    
+    localUploadTask = [manager uploadTaskWithRequest:request
+                                            fromFile:fileURL
+                                            progress:progressBlock
+                                   completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+                                       if (failureBlock && error) {
+                                           kRequestManagerSessionStatus status = kRequestManagerSessionStatusErrored;
+                                           failureBlock(responseObject, error, status);
+                                       }
+                                       if (completionBlock && !error) {
+                                           kRequestManagerSessionStatus status = kRequestManagerSessionStatusFileCompleted;
+                                           completionBlock(status, responseObject);
+                                       }
+                                   }];
+    
+    if (statusBlock) {
+        [self setStatusBlockForUploadManagar:manager
+                                    withTask:localUploadTask
+                                 statusBlock:statusBlock];
+    }
+    
+    [localUploadTask resume];
+    [self.calculationTimesStore setObject:[NSDate date] forKey:@(localUploadTask.taskIdentifier)];
+    
+    return localUploadTask;
+}
+
+
+//----------------------------------------------------------------------------------------------
+- (nullable NSURLSessionUploadTask *)uploadData:(NSData *)rawData
+                                          toUrl:(NSString *)URLString
+                                  progressBlock:(nullable void(^)(NSProgress *progress)) progressBlock
+                                    statusBlock:(nullable void (^)(NSTimeInterval seconds,
+                                                                   CGFloat percentDone,
+                                                                   CGFloat byteRemaining,
+                                                                   CGFloat bytesWritten)) statusBlock
+                                completionBlock:(nullable void(^)(kRequestManagerSessionStatus status,
+                                                                  id response)) completionBlock
+                                        failure:(nullable void (^)(id response,
+                                                                   NSError *error,
+                                                                   kRequestManagerSessionStatus status)) failureBlock
+                           enableBackgroundMode:(nullable void (^)(NSURLSession *session)) backgroundBlock
+//----------------------------------------------------------------------------------------------
+{
+    if (!rawData) {
+        return nil;
+    }
+    NSURL *url = [NSURL URLWithString:URLString];
+    NSURLSessionUploadTask *localUploadTask;
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    AFURLSessionManager *manager;
+    if (backgroundBlock) {
+        manager = self.backgroundSessionManager;
+        [self.backgroundSessionManager setDidFinishEventsForBackgroundURLSessionBlock:backgroundBlock];
+    } else {
+        manager = self.urlSessionManager;
+    }
+    
+    localUploadTask = [manager uploadTaskWithRequest:request
+                                            fromData:rawData
+                                            progress:progressBlock
+                                   completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+                                       if (failureBlock && error) {
+                                           kRequestManagerSessionStatus status = kRequestManagerSessionStatusErrored;
+                                           failureBlock(responseObject, error, status);
+                                       }
+                                       if (completionBlock && !error) {
+                                           kRequestManagerSessionStatus status = kRequestManagerSessionStatusFileCompleted;
+                                           completionBlock(status, responseObject);
+                                       }
+                                   }];
+    
+    if (statusBlock) {
+        [self setStatusBlockForUploadManagar:manager
+                                    withTask:localUploadTask
+                                 statusBlock:statusBlock];
+    }
+    
+    [localUploadTask resume];
+    [self.calculationTimesStore setObject:[NSDate date] forKey:@(localUploadTask.taskIdentifier)];
+    
+    return localUploadTask;
+}
+#pragma mark - Helper Functions
+
+//----------------------------------------------------------------------------------------------
+- (void)setStatusBlockForDownloadManagar:(AFURLSessionManager*)manager
+                                withTask:(NSURLSessionDownloadTask*)task
+                             statusBlock:(nullable void (^)(NSTimeInterval seconds,
+                                                            CGFloat percentDone,
+                                                            CGFloat byteRemaining,
+                                                            CGFloat bytesWritten))statusBlock
+//----------------------------------------------------------------------------------------------
+{
+    [manager setDownloadTaskDidWriteDataBlock:^(NSURLSession * _Nonnull session, NSURLSessionDownloadTask * _Nonnull downloadTask, int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
+        
+        if (task.taskIdentifier == downloadTask.taskIdentifier) {
+            //inline to avoid weakselfs etc. function is not to big and this is so simpel math, we dont need seperate test here..
+            NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:[self.calculationTimesStore objectForKey:@(downloadTask.taskIdentifier)]];
+            NSTimeInterval speed = (totalBytesWritten / timeInterval);
+            double remainingBytes = totalBytesExpectedToWrite - totalBytesWritten;
+            NSTimeInterval remainingSeconds = (remainingBytes / speed);
+            
+            CGFloat percentDone = (100 * totalBytesWritten) / totalBytesExpectedToWrite;
+            CGFloat bytesRemaining = totalBytesExpectedToWrite - totalBytesWritten;
+            statusBlock(remainingSeconds, percentDone, bytesRemaining, totalBytesWritten);
+        }
+    }];
+}
+
+//----------------------------------------------------------------------------------------------
+- (void)setStatusBlockForUploadManagar:(AFURLSessionManager*)manager
+                              withTask:(NSURLSessionUploadTask*)upTask
+                           statusBlock:(nullable void (^)(NSTimeInterval seconds,
+                                                          CGFloat percentDone,
+                                                          CGFloat byteRemaining,
+                                                          CGFloat bytesWritten))statusBlock
+//----------------------------------------------------------------------------------------------
+{
+    [manager setTaskDidSendBodyDataBlock:^(NSURLSession * _Nonnull session, NSURLSessionTask * _Nonnull task, int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend) {
+        if (task.taskIdentifier == upTask.taskIdentifier) {
+            //inline to avoid weakselfs etc. function is not to big and this is so simpel math, we dont need seperate test here..
+            NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:[self.calculationTimesStore objectForKey:@(upTask.taskIdentifier)]];
+            NSTimeInterval speed = (bytesSent / timeInterval) * 1024;
+            double remainingBytes = totalBytesExpectedToSend - totalBytesSent;
+            NSTimeInterval remainingSeconds = (remainingBytes / speed);
+            
+            CGFloat percentDone = (100 * totalBytesSent) / totalBytesExpectedToSend;
+            CGFloat bytesRemaining = totalBytesExpectedToSend - totalBytesSent;
+            statusBlock(remainingSeconds, percentDone, bytesRemaining, totalBytesSent);
+        }
+    }];
+}
+
+//----------------------------------------------------------------------------------------------
+- (BOOL)fileDownloadCompletedForItem:(NSString *)fileIdentifier
+//----------------------------------------------------------------------------------------------
+{
+    NSString *filePath = [self.downloadStore objectForKey:fileIdentifier];
+    return filePath ? YES : NO;
+}
+
+
+#pragma mark - File related Helper Functions
 //----------------------------------------------------------------------------------------------
 - (void)removeDeadFilesInStore
 //----------------------------------------------------------------------------------------------
@@ -400,143 +682,6 @@ static OFRequestManager *sharedInstance = nil;
         [self.downloadStore removeObjectForKey:key];
     }
 }
-
-//----------------------------------------------------------------------------------------------
-- (kRequestManagerSessionStatus)downloadFileFromURL:(NSString *)URLString
-                                           withName:(nullable NSString *)fileName
-                                   inDirectoryNamed:(nullable NSURL *)directory
-                                      progressBlock:(nullable void(^)(NSProgress *progress))progressBlock
-                                      remainingTime:(nullable void(^)(NSTimeInterval seconds))remainingTimeBlock
-                                    completionBlock:(nullable void(^)(kRequestManagerSessionStatus status, NSURL *directory, NSString *fileName))completionBlock
-                                            failure:(nullable void (^)(NSURLResponse * _Nonnull response, NSError *error, kRequestManagerSessionStatus status, NSURL *directory, NSString *fileName))failure
-                               enableBackgroundMode:(nullable void (^)(NSURLSession *session))backgroundBlock
-//----------------------------------------------------------------------------------------------
-{
-    NSURL *url = [NSURL URLWithString:URLString];
-    if (!fileName) {
-        fileName = [URLString lastPathComponent];
-    }
-    if (!directory) {
-        directory = [self cachesDirectoryUrlPath];
-    }
-    
-    NSURL *finalPathToWrite = [directory URLByAppendingPathComponent:fileName];
-    
-    //missing currently downloading? currently no ideas how to solve it in best way
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[finalPathToWrite absoluteString]]) {
-        
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        NSURLSessionDownloadTask *localDownloadTask;
-        
-        if (backgroundBlock) {
-            [self.backgroundSessionManager setDidFinishEventsForBackgroundURLSessionBlock:backgroundBlock];
-            
-            localDownloadTask = [self.backgroundSessionManager downloadTaskWithRequest:request
-                                                                              progress:progressBlock
-                                                                           destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
-                                                                               return finalPathToWrite;
-                                                                           }
-                                                                     completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
-                                                                         if (failure && error) {
-                                                                             kRequestManagerSessionStatus status = kRequestManagerSessionStatusErrored;
-                                                                             failure(response, error, status, directory, fileName);
-                                                                         } else if(completionBlock && !error) {
-                                                                             
-                                                                             kRequestManagerSessionStatus status;
-                                                                             status = kRequestManagerSessionStatusFileCompleted;
-                                                                             [self.downloadStore setObject:filePath forKey:fileName];
-                                                                             [self.downloadTimesStores removeObjectForKey:@(localDownloadTask.taskIdentifier)];
-                                                                             completionBlock(status, filePath, fileName);
-                                                                         }
-                                                                     }];
-            if (remainingTimeBlock) {
-                __weak typeof(self) weakSelf = self;
-                [self.urlSessionManager setDownloadTaskDidWriteDataBlock:^(NSURLSession * _Nonnull session, NSURLSessionDownloadTask * _Nonnull downloadTask, int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
-                    
-                    if (localDownloadTask.taskIdentifier == downloadTask.taskIdentifier) {
-                        if (remainingTimeBlock) {
-                            remainingTimeBlock([weakSelf calculateRemainingTimeForTask:downloadTask
-                                                                      withBytesWritten:bytesWritten
-                                                                     totalBytesWritten:totalBytesWritten
-                                                             totalBytesExpectedToWrite:totalBytesExpectedToWrite]);
-                        }
-                    }
-                }];
-            }
-
-            
-        } else {
-            localDownloadTask = [self.urlSessionManager downloadTaskWithRequest:request
-                                                                       progress:progressBlock
-                                                                    destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
-                                                                        return finalPathToWrite;
-                                                                    }
-                                                              completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
-                                                                  if (failure && error) {
-                                                                      kRequestManagerSessionStatus status = kRequestManagerSessionStatusErrored;
-                                                                      failure(response, error, status, directory, fileName);
-                                                                  } else if(completionBlock && !error) {
-                                                                      
-                                                                      kRequestManagerSessionStatus status;
-                                                                      status = kRequestManagerSessionStatusFileCompleted;
-                                                                      [self.downloadStore setObject:filePath forKey:fileName];
-                                                                      [self.downloadTimesStores removeObjectForKey:@(localDownloadTask.taskIdentifier)];
-                                                                      completionBlock(status, filePath, fileName);
-                                                                  }
-                                                              }];
-            
-            if (remainingTimeBlock) {
-                __weak typeof(self) weakSelf = self;
-                [self.urlSessionManager setDownloadTaskDidWriteDataBlock:^(NSURLSession * _Nonnull session, NSURLSessionDownloadTask * _Nonnull downloadTask, int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
-                    
-                    if (localDownloadTask.taskIdentifier == downloadTask.taskIdentifier) {
-                        if (remainingTimeBlock) {
-                            remainingTimeBlock([weakSelf calculateRemainingTimeForTask:downloadTask
-                                                                      withBytesWritten:bytesWritten
-                                                                     totalBytesWritten:totalBytesWritten
-                                                             totalBytesExpectedToWrite:totalBytesExpectedToWrite]);
-                        }
-                    }
-                }];
-            }
-        }
-        
-        if (!localDownloadTask) {
-            return kRequestManagerSessionStatusErrored;
-        }
-        [localDownloadTask resume];
-        [self.downloadTimesStores setObject:[NSDate date] forKey:@(localDownloadTask.taskIdentifier)];
-        return kRequestManagerSessionStatusStarted;
-    } else {
-        return kRequestManagerSessionStatusAlreadyDownloaded;
-    }
-}
-
-#pragma mark - Download Helper Functions
-
-//----------------------------------------------------------------------------------------------
-- (NSTimeInterval)calculateRemainingTimeForTask:(NSURLSessionDownloadTask*)downloadTask
-                               withBytesWritten:(int64_t)bytesWritten
-                              totalBytesWritten:(int64_t)totalBytesWritten
-                      totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
-//----------------------------------------------------------------------------------------------
-{
-    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:[self.downloadTimesStores objectForKey:@(downloadTask.taskIdentifier)]];
-    NSTimeInterval speed = (bytesWritten / timeInterval) * 1024;
-    double remainingBytes = totalBytesExpectedToWrite - bytesWritten;
-    return (remainingBytes / speed);
-}
-
-
-//----------------------------------------------------------------------------------------------
-- (BOOL)fileDownloadCompletedForItem:(NSString *)fileIdentifier
-//----------------------------------------------------------------------------------------------
-{
-    NSString *filePath = [self.downloadStore objectForKey:fileIdentifier];
-    return filePath ? YES : NO;
-}
-
-#pragma mark - File related Helper Functions
 
 //----------------------------------------------------------------------------------------------
 - (BOOL)fileExistsInDefaultDirWithName:(NSString *)fileName

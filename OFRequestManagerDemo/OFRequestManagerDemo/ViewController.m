@@ -14,6 +14,7 @@
 @property (strong, nonatomic) UIButton *testGetRequestBt;
 @property (strong, nonatomic) UIButton *testPostRequestBt;
 @property (strong, nonatomic) UIButton *testDownloadRequestBt;
+@property (strong, nonatomic) UIButton *testMultipartRequestBt;
 @property (strong, nonatomic) UILabel *remainingTimeLabel;
 @property (strong, nonatomic) UITextView *resultTV;
 
@@ -61,18 +62,27 @@
     self.testDownloadRequestBt = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.testDownloadRequestBt setTitle:@"Test Downloadfile" forState:UIControlStateNormal];
     [self.testDownloadRequestBt addTarget:self action:@selector(testDownloadFileButtonDidPress:) forControlEvents:UIControlEventTouchUpInside];
-    [self.testDownloadRequestBt setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.testDownloadRequestBt setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [self.testDownloadRequestBt sizeToFit];
     self.testDownloadRequestBt.frame = CGRectMake(175, 30, self.testDownloadRequestBt.frame.size.width, self.testDownloadRequestBt.frame.size.height);
     [self.view addSubview:self.testDownloadRequestBt];
     
+    self.testMultipartRequestBt = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.testMultipartRequestBt setTitle:@"Test Multipart Post" forState:UIControlStateNormal];
+    [self.testMultipartRequestBt addTarget:self action:@selector(testMultipartButtonDidPress:) forControlEvents:UIControlEventTouchUpInside];
+    [self.testMultipartRequestBt setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
+    [self.testMultipartRequestBt sizeToFit];
+    self.testMultipartRequestBt.frame = CGRectMake(0, 70, self.testMultipartRequestBt.frame.size.width, self.testMultipartRequestBt.frame.size.height);
+    [self.view addSubview:self.testMultipartRequestBt];
+    
     self.remainingTimeLabel = [UILabel new];
     self.remainingTimeLabel.text = @"Here you will see the remaining time";
     [self.remainingTimeLabel sizeToFit];
-    self.remainingTimeLabel.frame = CGRectMake(0, 80, self.remainingTimeLabel.frame.size.width, self.remainingTimeLabel.frame.size.height);
+    self.remainingTimeLabel.numberOfLines = 0;
+    self.remainingTimeLabel.frame = CGRectMake(0, 80, [UIScreen mainScreen].bounds.size.width, 100);
     [self.view addSubview:self.remainingTimeLabel];
     
-    self.resultTV = [[UITextView alloc] initWithFrame:CGRectMake(0, 150, self.view.frame.size.width, self.view.frame.size.height - 150)];
+    self.resultTV = [[UITextView alloc] initWithFrame:CGRectMake(0, 250, self.view.frame.size.width, self.view.frame.size.height - 250)];
     [self.view addSubview:self.resultTV];
 }
 
@@ -84,7 +94,7 @@
 #pragma mark - URLS
 
 - (NSString*)getUrl {
-    return @"http://www.srfcdn.ch/mobile/srf-newsappconf/meteo/apps.json";
+    return @"a get url";
 }
 
 - (NSDictionary*)getParams {
@@ -95,17 +105,16 @@
 }
 
 - (NSURL*)postBaseUrl {
-    return [NSURL URLWithString:@"http://dev.crowdradio.de:3000/"];
+    return [NSURL URLWithString:@"baseUrl"];
 }
 
 - (NSString*)postHook1 {
-    return @"/app/init/";
+    return @"/test/test";
 }
+
 
 - (NSDictionary*)postParams {
     return @{
-             @"api_key" : @"43a0ec24-da00-4988-b05d-d7dc80099a63",
-             @"brandKey" : @"c255cc77-51c2-450e-9973-1cd35ee7bec5"
              };
 }
 
@@ -148,44 +157,64 @@
 
 - (void)testPostButtonDidPress:(id)sender {
     [[OFRequestManager sharedManager] POST:self.postHook1
-                               parameters:self.postParams
-                                 progress:nil
-                                  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                                      self.resultTV.text = [NSString stringWithFormat:@"%@",responseObject];
-                                  } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                                      self.resultTV.text = [NSString stringWithFormat:@"%@\n\non: %@",error.localizedDescription,
-                                                            task.originalRequest.URL];
-                                  }];
+                                parameters:self.postParams
+                                  progress:nil
+                                   success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                                       self.resultTV.text = [NSString stringWithFormat:@"%@",responseObject];
+                                   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                       self.resultTV.text = [NSString stringWithFormat:@"%@\n\non: %@",error.localizedDescription,
+                                                             task.originalRequest.URL];
+                                   }];
+}
+
+- (void)testMultipartButtonDidPress:(id)sender {
+//    [[OFRequestManager sharedManager] POST:@"https://posttestserver.com/"
+//                                parameters:[self postHook1]
+//                 constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+//                     <#code#>
+//                 }
+//                                  progress:nil
+//                                   success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//                                       <#code#>
+//                                   }
+//                                   failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//                                       <#code#>
+//                                   }
 }
 
 - (void)testDownloadFileButtonDidPress:(id)sender {
-    kRequestManagerSessionStatus status = [[OFRequestManager sharedManager] downloadFileFromURL:[self downloadURL]
-                                                                                       withName:[self downloadFilename]
-                                                                               inDirectoryNamed:nil
-                                                                                  progressBlock:^(NSProgress * _Nonnull progress) {
-//                                                                                      NSLog(@"progress %@",progress);
-                                                                                  }
-                                                                                  remainingTime:nil
-                                                                                completionBlock:^(kRequestManagerSessionStatus status, NSURL * _Nonnull directory, NSString * _Nonnull fileName) {
-                                                                                      if (status == kRequestManagerSessionStatusFileCompleted) {
-                                                                                          self.resultTV.text = [NSString stringWithFormat:@"Downloaded file with name:%@\nTo path:%@\n",fileName,directory];
-                                                                                      } else if (status == kRequestManagerSessionStatusAlreadyDownloaded) {
-                                                                                          self.resultTV.text = [NSString stringWithFormat:@"Downloaded file exchanged with name:%@\nTo path:%@\n",fileName,directory];
-                                                                                      }
-                                                                                  }
-                                           
-                                           
-                                                                                        failure:^(NSURLResponse * _Nonnull response, NSError * _Nonnull error, kRequestManagerSessionStatus status, NSURL * _Nonnull directory, NSString * _Nonnull fileName) {
-                                                                                      if (error) {
-                                                                                          self.resultTV.text = [NSString stringWithFormat:@"Failed to download with result %@",response];
-                                                                                      }
-                                                                                  }
-                                           
-                                           
-                                                                           enableBackgroundMode:^(NSURLSession *session){
-                                                                               NSLog(@"task finished in background");
-                                                                           }];
-    
-    NSLog(@"session state was %u",status);
+    [[OFRequestManager sharedManager] downloadFileFromURL:[self downloadURL]
+                                                 withName:[self downloadFilename]
+                                         inDirectoryNamed:nil
+                                            progressBlock:nil
+                                              statusBlock:^(NSTimeInterval seconds,
+                                                            CGFloat percentDone,
+                                                            CGFloat byteRemaining,
+                                                            CGFloat bytesWritten) {
+                                                  dispatch_async(dispatch_get_main_queue(), ^()
+                                                                 {
+                                                                     self.remainingTimeLabel.text = [NSString stringWithFormat:@"Time until done: %f\nPercent done: %f\nremaining bytes: %f\nbytes written until now: %f",seconds,percentDone,byteRemaining,bytesWritten];
+                                                                 });
+                                              }
+                                          completionBlock:^(kRequestManagerSessionStatus status,
+                                                            NSURL * _Nonnull directory,
+                                                            NSString * _Nonnull fileName,
+                                                            NSURLResponse * _Nonnull response) {
+                                              if (status == kRequestManagerSessionStatusFileCompleted) {
+                                                  self.resultTV.text = [NSString stringWithFormat:@"Downloaded file with name:%@\nTo path:%@\n",fileName,directory];
+                                              } else if (status == kRequestManagerSessionStatusAlreadyDownloaded) {
+                                                  self.resultTV.text = [NSString stringWithFormat:@"Downloaded file exchanged with name:%@\nTo path:%@\n",fileName,directory];
+                                              }
+                                          }
+                                             failureBlock:^(NSURLResponse * _Nonnull response,
+                                                            NSError * _Nonnull error,
+                                                            kRequestManagerSessionStatus status,
+                                                            NSURL * _Nonnull directory,
+                                                            NSString * _Nonnull fileName) {
+                                                 if (error) {
+                                                     self.resultTV.text = [NSString stringWithFormat:@"Failed to download with result %@",response];
+                                                 }
+                                             }
+                                enableBackgroundModeBlock:nil];
 }
 @end
