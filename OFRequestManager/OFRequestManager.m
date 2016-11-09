@@ -19,10 +19,13 @@
 @implementation OFRequestManager
 //Const
 NSString * const DOWNLOAD_STORE_USERDEFAULTS_NAME = @"OFRequestManagerDownloadStore";
+NSString * const httpPattern  = @"http://";
+NSString * const httpsPattern = @"https://";
 
 static OFRequestManager *sharedInstance = nil;
 
 @synthesize timeout = _timeout;
+@synthesize extraHTTPHeaderFields = _extraHTTPHeaderFields;
 
 //----------------------------------------------------------------------------------------------
 + (instancetype)sharedManager
@@ -109,7 +112,38 @@ static OFRequestManager *sharedInstance = nil;
     }
 }
 
+//----------------------------------------------------------------------------------------------
+- (void)setExtraHTTPHeaderFields:(NSMutableDictionary *)extraHTTPHeaderFields
+//----------------------------------------------------------------------------------------------
+{
+    _extraHTTPHeaderFields = extraHTTPHeaderFields;
+    [self updateHeaders];
+}
+
+//----------------------------------------------------------------------------------------------
+- (void)updateHeaders
+//----------------------------------------------------------------------------------------------
+{
+    if (self.extraHTTPHeaderFields) {
+        if (_httpSessionManager) {
+            for (NSString *key in self.extraHTTPHeaderFields) {
+                [_httpSessionManager.requestSerializer setValue:[self.extraHTTPHeaderFields objectForKey:key] forHTTPHeaderField:key];
+            }
+        }
+    }
+}
+
 #pragma mark - Custom Getter
+
+//----------------------------------------------------------------------------------------------
+- (NSMutableDictionary*)extraHTTPHeaderFields
+//----------------------------------------------------------------------------------------------
+{
+    if (!_extraHTTPHeaderFields) {
+        _extraHTTPHeaderFields = [NSMutableDictionary new];
+    }
+    return _extraHTTPHeaderFields;
+}
 
 //----------------------------------------------------------------------------------------------
 - (NSArray*)uploadTasks
@@ -215,18 +249,14 @@ static OFRequestManager *sharedInstance = nil;
 {
     if (_httpSessionManager == nil ) {
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:self.showNetworkIndicator];
-        _httpSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:self.baseURL];
+        _httpSessionManager = [[AFHTTPSessionManager alloc] init];
         _httpSessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
         
         if (self.acceptedContentTypes) {
             _httpSessionManager.responseSerializer.acceptableContentTypes = self.acceptedContentTypes;
         }
         
-        if (self.extraHTTPHeaderFields) {
-            for (NSString *key in self.extraHTTPHeaderFields) {
-                [_httpSessionManager.requestSerializer setValue:[self.extraHTTPHeaderFields objectForKey:key] forHTTPHeaderField:key];
-            }
-        }
+        [self updateHeaders];
         
         [_httpSessionManager.requestSerializer setTimeoutInterval:self.timeout];
     }
@@ -281,6 +311,17 @@ static OFRequestManager *sharedInstance = nil;
     }
 }
 
+//----------------------------------------------------------------------------------------------
+- (NSString*)checkUrlForBasePath:(NSString*)url
+//----------------------------------------------------------------------------------------------
+{
+    if (!self.baseURL || [url containsString:httpPattern] || [url containsString:httpsPattern]) {
+        return url;
+    } else if (self.baseURL) {
+        return [[self.baseURL URLByAppendingPathComponent:url] absoluteString];
+    }
+    return nil;
+}
 
 #pragma mark - HTTP API
 #pragma mark - Get
@@ -292,7 +333,7 @@ static OFRequestManager *sharedInstance = nil;
                               failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError *))failure
 //----------------------------------------------------------------------------------------------
 {
-    return [self.httpSessionManager GET:URLString
+    return [self.httpSessionManager GET:[self checkUrlForBasePath:URLString]
                              parameters:parameters
                                progress:downloadProgress
                                 success:success
@@ -308,12 +349,17 @@ static OFRequestManager *sharedInstance = nil;
                                failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
 //----------------------------------------------------------------------------------------------
 {
-    NSMutableDictionary *params = [parameters mutableCopy];
+    NSMutableDictionary *params;
+    if (parameters) {
+        params = [parameters mutableCopy];
+    } else {
+        params = [NSMutableDictionary new];
+    }
     
     if (self.additionalParamsToAddContiniously) {
         [params addEntriesFromDictionary:self.additionalParamsToAddContiniously];
     }
-    return [self.httpSessionManager POST:URLString
+    return [self.httpSessionManager POST:[self checkUrlForBasePath:URLString]
                               parameters:params
                                 progress:uploadProgress
                                  success:success
@@ -329,12 +375,17 @@ static OFRequestManager *sharedInstance = nil;
                                failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
 //----------------------------------------------------------------------------------------------
 {
-    NSMutableDictionary *params = [parameters mutableCopy];
+    NSMutableDictionary *params;
+    if (parameters) {
+        params = [parameters mutableCopy];
+    } else {
+        params = [NSMutableDictionary new];
+    }
     
     if (self.additionalParamsToAddContiniously) {
         [params addEntriesFromDictionary:self.additionalParamsToAddContiniously];
     }
-    return [self.httpSessionManager POST:URLString
+    return [self.httpSessionManager POST:[self checkUrlForBasePath:URLString]
                               parameters:params
                constructingBodyWithBlock:block
                                 progress:uploadProgress
@@ -350,13 +401,18 @@ static OFRequestManager *sharedInstance = nil;
                                failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure
 //----------------------------------------------------------------------------------------------
 {
-    NSMutableDictionary *params = [parameters mutableCopy];
+    NSMutableDictionary *params;
+    if (parameters) {
+        params = [parameters mutableCopy];
+    } else {
+        params = [NSMutableDictionary new];
+    }
     
     if (self.additionalParamsToAddContiniously) {
         [params addEntriesFromDictionary:self.additionalParamsToAddContiniously];
     }
     
-    return [self.httpSessionManager PUT:URLString
+    return [self.httpSessionManager PUT:[self checkUrlForBasePath:URLString]
                              parameters:params
                                 success:success
                                 failure:failure];
@@ -370,13 +426,18 @@ static OFRequestManager *sharedInstance = nil;
                                  failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
 //----------------------------------------------------------------------------------------------
 {
-    NSMutableDictionary *params = [parameters mutableCopy];
+    NSMutableDictionary *params;
+    if (parameters) {
+        params = [parameters mutableCopy];
+    } else {
+        params = [NSMutableDictionary new];
+    }
     
     if (self.additionalParamsToAddContiniously) {
         [params addEntriesFromDictionary:self.additionalParamsToAddContiniously];
     }
     
-    return [self.httpSessionManager PATCH:URLString
+    return [self.httpSessionManager PATCH:[self checkUrlForBasePath:URLString]
                                parameters:params
                                   success:success
                                   failure:failure];
@@ -390,13 +451,18 @@ static OFRequestManager *sharedInstance = nil;
                                   failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
 //----------------------------------------------------------------------------------------------
 {
-    NSMutableDictionary *params = [parameters mutableCopy];
+    NSMutableDictionary *params;
+    if (parameters) {
+        params = [parameters mutableCopy];
+    } else {
+        params = [NSMutableDictionary new];
+    }
     
     if (self.additionalParamsToAddContiniously) {
         [params addEntriesFromDictionary:self.additionalParamsToAddContiniously];
     }
     
-    return [self.httpSessionManager DELETE:URLString
+    return [self.httpSessionManager DELETE:[self checkUrlForBasePath:URLString]
                                 parameters:params
                                    success:success
                                    failure:failure];
@@ -410,7 +476,7 @@ static OFRequestManager *sharedInstance = nil;
                                failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
 //----------------------------------------------------------------------------------------------
 {
-    return [self.httpSessionManager HEAD:URLString
+    return [self.httpSessionManager HEAD:[self checkUrlForBasePath:URLString]
                               parameters:parameters
                                  success:success
                                  failure:failure];
@@ -441,7 +507,7 @@ static OFRequestManager *sharedInstance = nil;
                                  enableBackgroundModeBlock:(nullable void (^)(NSURLSession *session)) backgroundBlock
 //----------------------------------------------------------------------------------------------
 {
-    NSURL *url = [NSURL URLWithString:URLString];
+    NSURL *url = [NSURL URLWithString:[self checkUrlForBasePath:URLString]];
     if (!fileName) {
         fileName = [URLString lastPathComponent];
     }
@@ -453,6 +519,7 @@ static OFRequestManager *sharedInstance = nil;
     NSURLSessionDownloadTask *localDownloadTask;
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     AFURLSessionManager *manager;
+    
     if (backgroundBlock) {
         manager = self.backgroundSessionManager;
         [self.backgroundSessionManager setDidFinishEventsForBackgroundURLSessionBlock:backgroundBlock];
@@ -512,7 +579,7 @@ static OFRequestManager *sharedInstance = nil;
     if (!fileURL) {
         return nil;
     }
-    NSURL *url = [NSURL URLWithString:URLString];
+    NSURL *url = [NSURL URLWithString:[self checkUrlForBasePath:URLString]];
     NSURLSessionUploadTask *localUploadTask;
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     AFURLSessionManager *manager;
@@ -569,7 +636,7 @@ static OFRequestManager *sharedInstance = nil;
     if (!rawData) {
         return nil;
     }
-    NSURL *url = [NSURL URLWithString:URLString];
+    NSURL *url = [NSURL URLWithString:[self checkUrlForBasePath:URLString]];
     NSURLSessionUploadTask *localUploadTask;
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     AFURLSessionManager *manager;
@@ -664,6 +731,37 @@ static OFRequestManager *sharedInstance = nil;
     return filePath ? YES : NO;
 }
 
+//----------------------------------------------------------------------------------------------
++ (id)responseForTask:(NSURLSessionTask *)task
+            withError:(NSError*)error
+//----------------------------------------------------------------------------------------------
+{
+    NSError *parserError;
+    AFJSONResponseSerializer *serializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
+    
+    NSDictionary *response = [serializer responseObjectForResponse:task.response
+                                                              data:error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey]
+                                                             error:&parserError];
+    return response;
+}
+
+//----------------------------------------------------------------------------------------------
++ (NSInteger)statusCodeFromResponse:(NSURLResponse*)response
+//----------------------------------------------------------------------------------------------
+{
+    if (response) {
+        return ((NSHTTPURLResponse*)response).statusCode;
+    }
+    
+    return 0;
+}
+
+//----------------------------------------------------------------------------------------------
++ (id)requestBodyForTask:(NSURLSessionTask *)task
+//----------------------------------------------------------------------------------------------
+{
+    return [[NSString alloc] initWithData:task.originalRequest.HTTPBody encoding:NSUTF8StringEncoding];
+}
 
 #pragma mark - File related Helper Functions
 //----------------------------------------------------------------------------------------------

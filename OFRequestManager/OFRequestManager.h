@@ -45,7 +45,7 @@ extern NSString * const DOWNLOAD_STORE_USERDEFAULTS_NAME;
 /**
  Use this property to provide extra HTTP Headers, they will be added as provided.
  */
-@property (nonatomic, copy, nullable) NSDictionary *extraHTTPHeaderFields;
+@property (nonatomic, copy, nullable) NSMutableDictionary *extraHTTPHeaderFields;
 /**
  Override this for custom values, default value is 60 seconds
  */
@@ -57,7 +57,7 @@ extern NSString * const DOWNLOAD_STORE_USERDEFAULTS_NAME;
 /**
  Parameters which will be used in every request as a kind of base parameters.
  */
-@property (nonatomic, copy, nullable) NSDictionary *additionalParamsToAddContiniously;
+@property (nonatomic, strong, nullable) NSMutableDictionary *additionalParamsToAddContiniously;
 /**
  Parameters which will be used in every request as a kind of base parameters.
  */
@@ -111,6 +111,33 @@ extern NSString * const DOWNLOAD_STORE_USERDEFAULTS_NAME;
  */
 - (nullable NSProgress *)progressForTask:(NSURLSessionTask *)task;
 
+/**
+ *  Will invoke an update over all headerfields in all sessionmanagers.
+ */
+- (void)updateHeaders;
+
+#pragma mark - FriendlyHelpers
+/**
+ *  Extractes a send request from a completed task.
+ *
+ *  @param task Any kind of Tasks are handled.
+ *
+ *  @return if possible, will return the send request as string for debug usage.
+ */
++ (id)requestBodyForTask:(NSURLSessionTask *)task;
+
+/**
+ *  Extractes a response object from a failed completed task.
+ *
+ *  @param task Any kind of Tasks are handled.
+ *  @param error object from the failed task.
+ *
+ *  @return if possible, will return the send request as string for debug usage.
+ */
++ (id)responseForTask:(NSURLSessionTask* _Nonnull)task
+            withError:(NSError* _Nonnull)error;
+
++ (NSInteger)statusCodeFromResponse:(NSURLResponse*)response;
 
 #pragma mark - Data Tasks
 /**
